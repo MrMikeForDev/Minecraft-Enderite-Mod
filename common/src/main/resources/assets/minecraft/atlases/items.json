@@ -1,0 +1,19 @@
+{
+  "sources": [
+    {
+      "type": "paletted_permutations",
+      "textures": [
+        "trims/items/leggings_trim",
+        "trims/items/chestplate_trim",
+        "trims/items/helmet_trim",
+        "trims/items/boots_trim"
+      ],
+      "palette_key": "minecraft:trim_base",
+      "permutations": {
+        "enderite": "enderitemod:trim/enderite",
+        "enderite_darker": "enderitemod:trim/enderite_darker",
+        "enderite_lighter": "enderitemod:trim/enderite_lighter"
+      }
+    }
+  ]
+}

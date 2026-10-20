@@ -9,15 +9,16 @@ public class Config {
 
     public static class General {
         public boolean allowVoidFloatingEnchantment = true;
+        public boolean sulfurCubeCrackedEnderiteOreRenderFix = true;
         public float enderiteUpgradeTemplateChance = 0.5f;
     }
 
     public static class Tools {
-        public int enderitePickaxeAD = 4;
-        public int enderiteAxeAD = 8;
-        public int enderiteHoeAD = -2;
+        public float enderitePickaxeAD = 4;
+        public float enderiteAxeAD = 8;
+        public float enderiteHoeAD = -2;
         public float enderiteShovelAD = 4.5f;
-        public int enderiteSwordAD = 6;
+        public float enderiteSwordAD = 6;
 
         public float enderiteBowAD = 2.5f;
         public float enderiteBowArrowSpeed = 3.5f;
@@ -31,6 +32,12 @@ public class Config {
         public int durability = 4096;
 
         public int maxTeleportCharge = 64;
+        public int enderiteSwordTeleportDistance = 30;
+
+        public Spear spear = new Spear();
+
+        public float miningSpeed = 15.0f;
+        public float attackDamageBonus = 5.0f;
     }
 
     public static class WorldGeneration {
@@ -47,12 +54,20 @@ public class Config {
         public int leggingsProtection = 7;
         public int chestplateProtection = 9;
         public int helmetProtection = 4;
-        public int bodyProtection = 12;
+        public int bodyProtection = 29;
 
         public int durabilityMultiplier = 72;
         public int enchantability = 17;
         public float toughness = 4.0f;
         public float knockbackResistance = 0.1f;
+    }
+
+    public static class Spear {
+        public float swingAnimationSeconds = 1.25F;
+        public float chargeDamageMultiplier = 1.375F;
+        public float chargeDelaySeconds = 0.3F;
+        public float maxDurationForDismountSeconds = 2.0F;
+        public float minSpeedForDismount = 6.5F;
     }
 
 }

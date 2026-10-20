@@ -1,0 +1,91 @@
+name: Publish
+on:
+  workflow_dispatch:
+    inputs:
+      version_type:
+        description: 'Version type'
+        required: true
+        default: 'release'
+        type: choice
+        options:
+          - alpha
+          - beta
+          - release
+
+jobs:
+  publish:
+    name: Publish ${{ matrix.loader }}
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    
+    strategy:
+      # This prevents one failure (e.g., NeoForge) from stopping the other (Fabric)
+      fail-fast: false
+      matrix:
+        include:
+          - loader: fabric
+            name: Fabric
+            curseforge-id: 399221
+            dependencies: |
+              architectury-api(required){modrinth:lhGA9TYQ}{curseforge:419699}#(ignore:github)
+              fabric-api(required){modrinth:P7dR8mSH}{curseforge:306612}#(ignore:github)
+              cloth-config(required){modrinth:9s6osm5g}{curseforge:348521}#(ignore:github)
+              shulkerboxtooltip(optional){modrinth:2M01OLQq}{curseforge:315811}#(ignore:github)
+              modmenu(optional){modrinth:mOgUt4GM}{curseforge:308702}#(ignore:github)
+
+          - loader: neoforge
+            name: NeoForge
+            curseforge-id: 401284
+            dependencies: |
+              architectury-api(required){modrinth:lhGA9TYQ}{curseforge:419699}#(ignore:github)
+              cloth-config(optional){modrinth:9s6osm5g}{curseforge:348521}#(ignore:github)
+              shulkerboxtooltip(optional){modrinth:2M01OLQq}{curseforge:315811}#(ignore:github)
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4 
+          
+      - name: Read gradle.properties
+        id: properties
+        uses: madhead/read-java-properties@latest
+        with:
+          file: gradle.properties
+          all: true
+        
+      - name: Set up JDK
+        uses: actions/setup-java@v4
+        with:
+          java-version: 25
+          distribution: temurin     
+          
+      - name: Make Gradle Wrapper Executable
+        if: ${{ runner.os != 'Windows' }}
+        run: chmod +x ./gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew :${{ matrix.loader }}:build
+        
+      - name: Upload ${{ matrix.loader }}
+        uses: Kir-Antipov/mc-publish@v3.3
+        with:
+          loaders: ${{ matrix.loader }}
+          # Dynamically select the build folder based on the matrix loader name
+          files: |
+            ${{ matrix.loader }}/build/libs/!(*-@(dev|dev-shadow|sources|javadoc)).jar
+          
+          # Common Modrinth ID for both
+          modrinth-id: 6lvRWqbA
+          modrinth-token: ${{ secrets.MODRINTH_TOKEN }}
+
+          # Dynamic CurseForge ID based on the matrix
+          curseforge-id: ${{ matrix.curseforge-id }}
+          curseforge-token: ${{ secrets.CURSEFORGE_TOKEN }}
+
+          # Properties
+          modrinth-featured: true
+          version-type: ${{ inputs.version_type }}
+
+          name: Release - MC ${{ steps.properties.outputs.minecraft_version }} - v${{ steps.properties.outputs.mod_version }} - ${{ matrix.name }}
+          changelog-file: CHANGELOG.md
+

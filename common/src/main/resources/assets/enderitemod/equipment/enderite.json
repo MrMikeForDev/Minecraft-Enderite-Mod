@@ -9,6 +9,24 @@
       {
         "texture": "enderitemod:enderite"
       }
+    ],
+    "horse_body": [
+      {
+        "texture": "enderitemod:enderite"
+      }
+    ],
+    "nautilus_body": [
+      {
+        "texture": "enderitemod:enderite"
+      }
     ]
-  }
+  },
+  "trim_overrides": [
+    {
+      "palette": "enderitemod:trim/enderite_lighter",
+      "when": {
+        "material": "enderitemod:enderite"
+      }
+    }
+  ]
 }

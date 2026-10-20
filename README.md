@@ -58,11 +58,26 @@ Special thanks to:
 - Pale-Champion-Atom596
 - MisterPeModder
 
+## Building and testing
+
+The current version targets Minecraft **26.3** on Fabric and NeoForge and requires **JDK 25**. See [dependency versions and sources](docs/dependency-update-research.md).
+
+```powershell
+.\gradlew.bat build
+.\gradlew.bat :fabric:runGameTest :neoforge:runGameTest
+```
+
+On Linux/macOS, use `./gradlew` instead. Each loader runs the same 21 in-game tests. The tests cover End ore registration and chunk generation, ore explosions, recipes, armor trims, respawn anchors, void survival, Endermen, smelting, dispensers, vanilla tool interactions, teleportation onto Enderite blocks, shulker drop preservation, item gravity/fire resistance, hopper extraction, creeper explosions, and rejection of ore by regular furnaces. The shulker upgrade test uses the vanilla smithing menu and checks the template requirement and preservation of contents and name.
+
+Tests use disposable worlds under each loader's `build/gametest` directory. JUnit XML reports are written to `fabric/build/reports/gametest/results.xml` and `neoforge/build/reports/gametest/results.xml`. The tasks fail if the server produces no report, runs no tests, or reports failures.
+
+For a separate Fabric client startup check, run `:fabric:runClientSmoke`; it uses `fabric/build/client-smoke` and stays open for manual inspection. Server GameTests do not verify visual appearance.
+
 ## Translation
 
 Thanks to:
 - ES: CamoloQlo
-- ZH_CN: Samekichi, WuzgXY
+- ZH_CN: Samekichi, WuzgXY, MrMikeForDev
 - RU: temac000, mpustovoi
 - PL: zealoussentinel512
 - FR: JustArthur
@@ -73,6 +88,19 @@ Thanks to:
 Enderite Mod is licensed under MIT. The full license can be found in the license file.
 
 ## Fabric/NeoForge
+
+### 1.10.0
+- Updated to Minecraft 26.3 and current compatible dependencies.
+- Follow vanilla tool properties, rendering, trim palettes, loot modifiers, and teleportation tags.
+- Added Fabric and NeoForge GameTest tasks with 14 tests per loader.
+
+### 1.9.0
+- Updated the mod for Minecraft 26.2.
+- Added compatibility with Minecraft's new Sulfur Cube item behavior for Enderite blocks and ores.
+- Updated rendering for the latest Minecraft client rendering changes
+
+### 1.8.3
+- Added new sounds/animations for Enderite Shulkerbox
 
 ### 1.7.1
 
